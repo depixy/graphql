@@ -24,7 +24,6 @@ jobs:
       - run: npm ci
       - run: npm run patch
       - run: npm run build
-      - run: npm run test:esm
   test-cjs:
     name: test:cjs
     runs-on: ubuntu-latest
@@ -36,4 +35,3 @@ jobs:
       - run: npm ci
       - run: npm run patch
       - run: npm run build
-      - run: npm run test:cjs
