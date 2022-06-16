@@ -7,7 +7,7 @@ import {
   VoidResolver
 } from "graphql-scalars";
 import { default as gql } from "graphql-tag";
-import GraphQLUpload from "graphql-upload/GraphQLUpload.js";
+import { GraphQLUpload } from "@depixy/graphql-upload";
 
 import type { IResolvers } from "mercurius";
 

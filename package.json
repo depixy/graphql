@@ -48,13 +48,12 @@
     "lib"
   ],
   "dependencies": {
+    "@depixy/graphql-upload": "^2.0.0",
     "@graphql-tools/schema": "^8.3.14",
     "fastify-plugin": "^3.0.1",
     "graphql-scalars": "^1.17.0",
     "graphql-tag": "^2.12.6",
-    "graphql-upload": "^15.0.1",
-    "mercurius": "^10.0.0",
-    "mercurius-upload": "^5.0.0"
+    "mercurius": "^10.0.0"
   },
   "devDependencies": {
     "@depixy/auth": "^2.1.4",
