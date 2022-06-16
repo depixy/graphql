@@ -1,0 +1,71 @@
+{
+  "name": "@depixy/graphql-user",
+  "version": "2.0.0",
+  "description": "",
+  "main": "./lib/cjs/index.js",
+  "typings": "./lib/cjs/index.d.ts",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prebuild": "rimraf lib",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc --module node16 --outDir lib/esm",
+    "build:cjs": "tsc --module CommonJS --outDir lib/cjs",
+    "lint": "eslint --ext .ts src",
+    "codegen": "ts-node ./script/codegen.ts",
+    "patch": "node ./script/patch-ts.js"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/esm/index.d.ts",
+        "default": "./lib/esm/index.js"
+      },
+      "require": {
+        "types": "./lib/cjs/index.d.ts",
+        "default": "./lib/cjs/index.js"
+      }
+    }
+  },
+  "keywords": [
+    "depixy",
+    "depixy-plugin"
+  ],
+  "homepage": "https://github.com/depixy/graphql-user#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/depixy/graphql-user.git"
+  },
+  "bugs": {
+    "url": "https://github.com/depixy/graphql-user/issues"
+  },
+  "author": "Joshua Avalon",
+  "license": "Apache-2.0",
+  "files": [
+    "src",
+    "lib"
+  ],
+  "dependencies": {
+    "@graphql-tools/schema": "^8.3.14",
+    "fastify-plugin": "^3.0.1",
+    "graphql-scalars": "^1.17.0",
+    "graphql-tag": "^2.12.6",
+    "graphql-upload": "^15.0.1",
+    "mercurius": "^10.0.0",
+    "mercurius-upload": "^5.0.0"
+  },
+  "devDependencies": {
+    "@depixy/auth": "^2.1.4",
+    "@depixy/database": "^2.2.2",
+    "@joshuaavalon/eslint-config-typescript": "^6.1.4",
+    "eslint": "^8.17.0",
+    "fastify": "^4.0.1",
+    "mercurius-codegen": "^4.0.0",
+    "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  }
+}
