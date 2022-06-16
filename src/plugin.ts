@@ -1,6 +1,6 @@
 import { default as fastifyPlugin } from "fastify-plugin";
 import { default as mercurius } from "mercurius";
-import { default as mercuriusUpload } from "mercurius-upload";
+import graphqlUpload from "@depixy/graphql-upload";
 
 import { schema } from "./schema/index.js";
 
@@ -11,7 +11,7 @@ export const plugin = fastifyPlugin<DepixyGraphqlUserOptions>(
     if (!opts) {
       throw new Error("Options must be defined");
     }
-    fastify.register(mercuriusUpload);
+    fastify.register(graphqlUpload);
     fastify.register(mercurius, {
       schema,
       path: "/api/v1/graphql/user",

@@ -1,4 +1,4 @@
-import type { FileUpload } from "graphql-upload/GraphQLUpload.js";
+import type { FileUpload } from "@depixy/graphql-upload";
 import type {
   GraphQLResolveInfo,
   GraphQLScalarType,

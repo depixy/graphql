@@ -20,6 +20,6 @@ codegenMercurius(app, {
     }
   },
   preImportCode: `
-  import type { FileUpload } from "graphql-upload/GraphQLUpload.js";
+  import type { FileUpload } from "@depixy/graphql-upload";
   `
 }).catch(console.error);
