@@ -1,11 +1,19 @@
 import { default as fastify } from "fastify";
 import { codegenMercurius } from "mercurius-codegen";
+import { default as mercurius } from "mercurius";
+import graphqlUpload from "@depixy/graphql-upload";
 
-import graphqlUser from "../src/index.js";
+import schema from "../src/schema/index.js";
 
 const app = fastify();
-graphqlUser[Symbol.for("plugin-meta")].dependencies = [];
-await app.register(graphqlUser);
+
+app.register(graphqlUpload);
+app.register(mercurius, {
+  schema,
+  path: "/api/v1/graphql/user",
+  graphiql: false,
+  queryDepth: 7
+});
 
 codegenMercurius(app, {
   targetPath: "./src/graphql.generated.ts",

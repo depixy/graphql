@@ -2,7 +2,8 @@ import { default as fastifyPlugin } from "fastify-plugin";
 import { default as mercurius } from "mercurius";
 import graphqlUpload from "@depixy/graphql-upload";
 
-import { schema } from "./schema/index.js";
+import schema from "./schema/index.js";
+import adapters from "./adapter/index.js";
 
 export interface DepixyGraphqlUserOptions {}
 
@@ -11,12 +12,15 @@ export const plugin = fastifyPlugin<DepixyGraphqlUserOptions>(
     if (!opts) {
       throw new Error("Options must be defined");
     }
-    fastify.register(graphqlUpload);
-    fastify.register(mercurius, {
-      schema,
-      path: "/api/v1/graphql/user",
-      graphiql: false,
-      queryDepth: 7
+    fastify.register(async fastify => {
+      fastify.decorate("adapters", adapters);
+      fastify.register(graphqlUpload);
+      fastify.register(mercurius, {
+        schema,
+        path: "/api/v1/graphql/user",
+        graphiql: false,
+        queryDepth: 7
+      });
     });
   },
   {
@@ -25,7 +29,3 @@ export const plugin = fastifyPlugin<DepixyGraphqlUserOptions>(
     fastify: "4.x"
   }
 );
-
-declare module "fastify" {
-  interface FastifyInstance {}
-}

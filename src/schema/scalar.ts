@@ -20,10 +20,8 @@ export const typeDefs = gql`
   scalar Void
   scalar Upload
 
-  type Query {
-    hello: Date
-  }
-  # type Mutation
+  type Query
+  type Mutation
 `;
 
 export const resolvers: IResolvers = {
