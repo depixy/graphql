@@ -12,6 +12,7 @@ export const typeDefs = gql`
     role: String!
     createdAt: DateTime!
     updatedAt: DateTime!
+    posts: [Post!]!
   }
 
   input UserWhereUniqueInput {
@@ -124,7 +125,15 @@ export const resolvers: IResolvers = {
         .catch(wrapError);
     }
   },
-  User: {},
+  User: {
+    posts: async (parent, _args, ctx) => {
+      const { db } = ctx.app;
+      return await db.user
+        .findUnique({ where: { id: parent.id } })
+        .posts()
+        .catch(wrapError);
+    }
+  },
   Mutation: {
     login: async (_parent, args, ctx) => {
       const { db, passwordHandler } = ctx.app;

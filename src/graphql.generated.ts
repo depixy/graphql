@@ -464,6 +464,7 @@ export type User = {
   role: Scalars["String"];
   createdAt: Scalars["DateTime"];
   updatedAt: Scalars["DateTime"];
+  posts: Array<Post>;
 };
 
 export type UserWhereUniqueInput = {
@@ -1062,6 +1063,7 @@ export type UserResolvers<
   role?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  posts?: Resolver<Array<ResolversTypes["Post"]>, ParentType, ContextType>;
   isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1216,6 +1218,7 @@ export interface Loaders<
     role?: LoaderResolver<Scalars["String"], User, {}, TContext>;
     createdAt?: LoaderResolver<Scalars["DateTime"], User, {}, TContext>;
     updatedAt?: LoaderResolver<Scalars["DateTime"], User, {}, TContext>;
+    posts?: LoaderResolver<Array<Post>, User, {}, TContext>;
   };
 
   Users?: {

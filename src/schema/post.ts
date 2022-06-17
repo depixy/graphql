@@ -156,7 +156,11 @@ export const resolvers: IResolvers = {
     removePosts: async (_parent, args, ctx) => {
       const { db, adapters } = ctx.app;
       const { input } = args;
+      const user = assertUser(ctx);
       const where = adapters.post.where(input);
+      where.AND = {
+        userId: user.id
+      };
       return await db.post.deleteMany({ where }).catch(wrapError);
     }
   }

@@ -1,5 +1,5 @@
 import { default as gql } from "graphql-tag";
-import { notNull, wrapError } from "./prisma-util.js";
+import { assertUser, notNull, wrapError } from "./prisma-util.js";
 
 import type { IResolvers } from "mercurius";
 
@@ -123,6 +123,7 @@ export const resolvers: IResolvers = {
     createTag: async (_parent, args, ctx) => {
       const { db, adapters } = ctx.app;
       const { input } = args;
+      assertUser(ctx);
       const data = adapters.tag.create(input);
       return await db.tag.create({ data }).catch(wrapError);
     },
@@ -137,6 +138,7 @@ export const resolvers: IResolvers = {
     removeTags: async (_parent, args, ctx) => {
       const { db, adapters } = ctx.app;
       const { input } = args;
+      assertUser(ctx);
       const where = adapters.tag.where(input);
       return await db.tag.deleteMany({ where }).catch(wrapError);
     }
