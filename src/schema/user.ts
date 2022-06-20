@@ -99,7 +99,6 @@ export const resolvers: IResolvers = {
       const { pagination } = args;
       const { skip, take } = pagination;
       return {
-        _args: args,
         pageInfo: {
           skip,
           take
@@ -136,14 +135,14 @@ export const resolvers: IResolvers = {
   },
   Mutation: {
     login: async (_parent, args, ctx) => {
-      const { db, passwordHandler } = ctx.app;
+      const { db } = ctx.app;
       const { input } = args;
       const { password, loginName } = input;
       const user = await db.user.findUnique({ where: { loginName } });
       if (!user) {
         return null;
       }
-      const matchPassword = await passwordHandler.compare(
+      const matchPassword = await ctx.app.password.compare(
         password,
         user.hashedPassword
       );
@@ -158,10 +157,10 @@ export const resolvers: IResolvers = {
       return null;
     },
     createUser: async (_parent, args, ctx) => {
-      const { db, adapters, passwordHandler } = ctx.app;
+      const { db, adapters } = ctx.app;
       const { input } = args;
       const { password, ...others } = input;
-      const hashedPassword = await passwordHandler.hash(password);
+      const hashedPassword = await ctx.app.password.hash(password);
       const data = adapters.user.create({
         ...others,
         password: hashedPassword
@@ -169,11 +168,11 @@ export const resolvers: IResolvers = {
       return await db.user.create({ data }).catch(wrapError);
     },
     updateUser: async (_parent, args, ctx) => {
-      const { db, adapters, passwordHandler } = ctx.app;
+      const { db, adapters } = ctx.app;
       const { input } = args;
       const { password, ...others } = input;
       const hashedPassword = password
-        ? await passwordHandler.hash(password)
+        ? await ctx.app.password.hash(password)
         : undefined;
       const data = adapters.user.update({
         ...others,

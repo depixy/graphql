@@ -56,8 +56,8 @@
     "mercurius": "^10.0.0"
   },
   "devDependencies": {
-    "@depixy/auth": "^2.2.0",
-    "@depixy/database": "^2.2.2",
+    "@depixy/auth": "^2.4.0",
+    "@depixy/database": "^2.3.0",
     "@joshuaavalon/eslint-config-typescript": "^6.1.4",
     "eslint": "^8.17.0",
     "fastify": "^4.0.1",

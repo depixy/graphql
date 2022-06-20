@@ -85,7 +85,6 @@ export const resolvers: IResolvers = {
       const { pagination } = args;
       const { skip, take } = pagination;
       return {
-        _args: args,
         pageInfo: {
           skip,
           take

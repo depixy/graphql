@@ -1,31 +1,9 @@
 import { Prisma } from "@prisma/client";
 import { default as mercurius } from "mercurius";
+import { throwNullError, throwPrismaError } from "./error.js";
 
 import type { MercuriusContext } from "mercurius";
 import type { AuthContext } from "@depixy/auth";
-
-export const prismaUtil = {
-  async wrapError(e: unknown) {
-    if (!(e instanceof Prisma.PrismaClientKnownRequestError)) {
-      throw e;
-    }
-    const extension = {
-      type: "prisma",
-      code: e.code
-    };
-    throw new mercurius.ErrorWithProps(e.message, extension, 400);
-  },
-  async notNull<T>(data: T | null) {
-    if (data !== null) {
-      return data;
-    }
-    const extension = {
-      type: "prisma",
-      code: -1
-    };
-    throw new mercurius.ErrorWithProps("Expect not null", extension, 500);
-  }
-};
 
 export function getAuth(ctx: MercuriusContext): AuthContext | null {
   return ctx.reply.request.auth;
@@ -39,24 +17,28 @@ export function assertUser(ctx: MercuriusContext): AuthContext["user"] {
   return auth.user;
 }
 
+export function assertRole(
+  ctx: MercuriusContext,
+  role: "user" | "admin"
+): AuthContext["user"] {
+  const user = assertUser(ctx);
+
+  if (user.role !== role) {
+    throw new mercurius.ErrorWithProps("Not authorized", {}, 403);
+  }
+  return user;
+}
+
 export async function wrapError(e: unknown): Promise<never> {
   if (!(e instanceof Prisma.PrismaClientKnownRequestError)) {
     throw e;
   }
-  const extension = {
-    type: "prisma",
-    code: e.code
-  };
-  throw new mercurius.ErrorWithProps(e.message, extension, 400);
+  throwPrismaError(e);
 }
 
-export function notNull<T>(data: T | null): T {
-  if (data !== null) {
-    return data;
+export async function notNull<T>(data?: T | null): Promise<T> {
+  if (typeof data === "undefined" || data === null) {
+    throwNullError();
   }
-  const extension = {
-    type: "prisma",
-    code: -1
-  };
-  throw new mercurius.ErrorWithProps("Expect not null", extension, 500);
+  return data;
 }
