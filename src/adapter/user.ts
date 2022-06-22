@@ -15,7 +15,6 @@ const create = (input: UserCreateInput): Prisma.UserCreateArgs["data"] => {
     displayName,
     loginName,
     email,
-    role: "user",
     hashedPassword: password
   };
 };

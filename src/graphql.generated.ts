@@ -434,6 +434,14 @@ export type TagUpdateInput = {
   name?: InputMaybe<Scalars["String"]>;
 };
 
+export type Role = {
+  __typename?: "Role";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"];
+};
+
 export type Pagination = {
   skip: Scalars["Int"];
   take: Scalars["Int"];
@@ -461,10 +469,10 @@ export type User = {
   loginName: Scalars["String"];
   displayName: Scalars["String"];
   email: Scalars["String"];
-  role: Scalars["String"];
   createdAt: Scalars["DateTime"];
   updatedAt: Scalars["DateTime"];
   posts: Array<Post>;
+  roles: Array<Role>;
 };
 
 export type UserWhereUniqueInput = {
@@ -665,6 +673,7 @@ export type ResolversTypes = {
   TagOrderBy: TagOrderBy;
   TagCreateInput: TagCreateInput;
   TagUpdateInput: TagUpdateInput;
+  Role: ResolverTypeWrapper<Role>;
   BigInt: ResolverTypeWrapper<Scalars["BigInt"]>;
   Date: ResolverTypeWrapper<Scalars["Date"]>;
   Time: ResolverTypeWrapper<Scalars["Time"]>;
@@ -723,6 +732,7 @@ export type ResolversParentTypes = {
   TagOrderBy: TagOrderBy;
   TagCreateInput: TagCreateInput;
   TagUpdateInput: TagUpdateInput;
+  Role: Role;
   BigInt: Scalars["BigInt"];
   Date: Scalars["Date"];
   Time: Scalars["Time"];
@@ -1000,6 +1010,17 @@ export type TagsResolvers<
   isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type RoleResolvers<
+  ContextType = MercuriusContext,
+  ParentType extends ResolversParentTypes["Role"] = ResolversParentTypes["Role"]
+> = {
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface BigIntScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes["BigInt"], any> {
   name: "BigInt";
@@ -1060,10 +1081,10 @@ export type UserResolvers<
   loginName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   displayName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  role?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   posts?: Resolver<Array<ResolversTypes["Post"]>, ParentType, ContextType>;
+  roles?: Resolver<Array<ResolversTypes["Role"]>, ParentType, ContextType>;
   isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1097,6 +1118,7 @@ export type Resolvers<ContextType = MercuriusContext> = {
   TagCategories?: TagCategoriesResolvers<ContextType>;
   Tag?: TagResolvers<ContextType>;
   Tags?: TagsResolvers<ContextType>;
+  Role?: RoleResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   Date?: GraphQLScalarType;
   Time?: GraphQLScalarType;
@@ -1201,6 +1223,13 @@ export interface Loaders<
     pageInfo?: LoaderResolver<PageInfo, Tags, {}, TContext>;
   };
 
+  Role?: {
+    id?: LoaderResolver<Scalars["ID"], Role, {}, TContext>;
+    name?: LoaderResolver<Scalars["String"], Role, {}, TContext>;
+    createdAt?: LoaderResolver<Scalars["DateTime"], Role, {}, TContext>;
+    updatedAt?: LoaderResolver<Scalars["DateTime"], Role, {}, TContext>;
+  };
+
   PageInfo?: {
     skip?: LoaderResolver<Scalars["Int"], PageInfo, {}, TContext>;
     take?: LoaderResolver<Scalars["Int"], PageInfo, {}, TContext>;
@@ -1215,10 +1244,10 @@ export interface Loaders<
     loginName?: LoaderResolver<Scalars["String"], User, {}, TContext>;
     displayName?: LoaderResolver<Scalars["String"], User, {}, TContext>;
     email?: LoaderResolver<Scalars["String"], User, {}, TContext>;
-    role?: LoaderResolver<Scalars["String"], User, {}, TContext>;
     createdAt?: LoaderResolver<Scalars["DateTime"], User, {}, TContext>;
     updatedAt?: LoaderResolver<Scalars["DateTime"], User, {}, TContext>;
     posts?: LoaderResolver<Array<Post>, User, {}, TContext>;
+    roles?: LoaderResolver<Array<Role>, User, {}, TContext>;
   };
 
   Users?: {

@@ -12,6 +12,7 @@ import * as image from "./image.js";
 import * as post from "./post.js";
 import * as tagCategory from "./tag-category.js";
 import * as tag from "./tag.js";
+import * as role from "./role.js";
 import * as scalar from "./scalar.js";
 import * as type from "./type.js";
 import * as user from "./user.js";
@@ -44,6 +45,7 @@ const schema = mergeSchema(
   post,
   tagCategory,
   tag,
+  role,
   scalar,
   type,
   user

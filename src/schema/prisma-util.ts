@@ -5,13 +5,15 @@ import { throwNullError, throwPrismaError } from "./error.js";
 import type { MercuriusContext } from "mercurius";
 import type { AuthContext } from "@depixy/auth";
 
-export function getAuth(ctx: MercuriusContext): AuthContext | null {
+export function getAuth(ctx: MercuriusContext): AuthContext {
   return ctx.reply.request.auth;
 }
 
-export function assertUser(ctx: MercuriusContext): AuthContext["user"] {
+export function assertUser(
+  ctx: MercuriusContext
+): NonNullable<AuthContext["user"]> {
   const auth = getAuth(ctx);
-  if (!auth) {
+  if (!auth.user) {
     throw new mercurius.ErrorWithProps("Not authorized", {}, 403);
   }
   return auth.user;
@@ -23,7 +25,8 @@ export function assertRole(
 ): AuthContext["user"] {
   const user = assertUser(ctx);
 
-  if (user.role !== role) {
+  /** TODO */
+  if (role !== "user") {
     throw new mercurius.ErrorWithProps("Not authorized", {}, 403);
   }
   return user;
