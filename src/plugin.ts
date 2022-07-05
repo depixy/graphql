@@ -24,7 +24,7 @@ export const plugin = fastifyPlugin<DepixyGraphqlUserOptions>(
     });
   },
   {
-    name: "@depixy/graphql-user",
+    name: "@depixy/graphql",
     dependencies: ["@depixy/auth", "@depixy/database"],
     fastify: "4.x"
   }

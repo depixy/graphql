@@ -1,5 +1,5 @@
 {
-  "name": "@depixy/graphql-user",
+  "name": "@depixy/graphql",
   "version": "2.0.0",
   "description": "",
   "main": "./lib/index.js",
@@ -29,13 +29,13 @@
     "depixy",
     "depixy-plugin"
   ],
-  "homepage": "https://github.com/depixy/graphql-user#readme",
+  "homepage": "https://github.com/depixy/graphql#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/depixy/graphql-user.git"
+    "url": "https://github.com/depixy/graphql.git"
   },
   "bugs": {
-    "url": "https://github.com/depixy/graphql-user/issues"
+    "url": "https://github.com/depixy/graphql/issues"
   },
   "author": "Joshua Avalon",
   "license": "Apache-2.0",
