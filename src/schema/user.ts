@@ -1,14 +1,26 @@
 import { default as gql } from "graphql-tag";
+import { DateTime } from "luxon";
 import { getAuth, wrapError } from "./prisma-util.js";
+import { throwCreateFirstUserError } from "./error.js";
 
 import type { IResolvers } from "mercurius";
 
 export const typeDefs = gql`
-  type User {
+  type DetailUser {
     id: ID!
     loginName: String!
     displayName: String!
     email: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    posts: [Post!]!
+    roles: [Role!]!
+  }
+
+  type User {
+    id: ID!
+    loginName: String!
+    displayName: String!
     createdAt: DateTime!
     updatedAt: DateTime!
     posts: [Post!]!
@@ -52,7 +64,7 @@ export const typeDefs = gql`
   }
 
   extend type Query {
-    me: User
+    me: DetailUser
     user(input: UserWhereUniqueInput!): User
     users(pagination: Pagination!): Users!
   }
@@ -78,10 +90,11 @@ export const typeDefs = gql`
   }
 
   extend type Mutation {
-    login(input: LoginInput!): User
+    login(input: LoginInput!): DetailUser
     logout: Void
-    createUser(input: UserCreateInput!): User!
-    updateUser(input: UserUpdateInput!): User!
+    createUser(input: UserCreateInput!): DetailUser!
+    createFirstUser(input: UserCreateInput!): DetailUser!
+    updateUser(input: UserUpdateInput!): DetailUser!
     removeUsers(input: UserWhereInput!): BatchPayload!
   }
 `;
@@ -140,6 +153,22 @@ export const resolvers: IResolvers = {
         .catch(wrapError);
     }
   },
+  DetailUser: {
+    posts: async (parent, _args, ctx) => {
+      const { db } = ctx.app;
+      return await db.user
+        .findUnique({ where: { id: parent.id } })
+        .posts()
+        .catch(wrapError);
+    },
+    roles: async (parent, _args, ctx) => {
+      const { db } = ctx.app;
+      return await db.user
+        .findUnique({ where: { id: parent.id } })
+        .roles()
+        .catch(wrapError);
+    }
+  },
   Mutation: {
     login: async (_parent, args, ctx) => {
       const { db } = ctx.app;
@@ -156,7 +185,15 @@ export const resolvers: IResolvers = {
       if (!matchPassword) {
         return null;
       }
-      ctx.reply.setJwtCookie(user);
+      const expiredOn = DateTime.now().plus({ days: 30 }).toJSDate();
+      const userToken = await db.userToken.create({
+        data: {
+          userId: user.id,
+          description: "login",
+          expiredOn
+        }
+      });
+      ctx.reply.setJwtCookie(userToken);
       return user;
     },
     logout: async (_parent, args, ctx) => {
@@ -172,7 +209,31 @@ export const resolvers: IResolvers = {
         ...others,
         password: hashedPassword
       });
-      return await db.user.create({ data }).catch(wrapError);
+      return await db.user
+        .create({ data: { ...data, roles: { connect: { name: "user" } } } })
+        .catch(wrapError);
+    },
+    createFirstUser: async (_parent, args, ctx) => {
+      const { db, adapters } = ctx.app;
+      const { input } = args;
+      const userCount = await db.user.count();
+      if (userCount > 0) {
+        throwCreateFirstUserError();
+      }
+      const { password, ...others } = input;
+      const hashedPassword = await ctx.app.password.hash(password);
+      const data = adapters.user.create({
+        ...others,
+        password: hashedPassword
+      });
+      return await db.user
+        .create({
+          data: {
+            ...data,
+            roles: { connect: [{ name: "admin" }, { name: "user" }] }
+          }
+        })
+        .catch(wrapError);
     },
     updateUser: async (_parent, args, ctx) => {
       const { db, adapters } = ctx.app;

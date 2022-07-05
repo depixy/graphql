@@ -1,11 +1,6 @@
 import { readFile, writeFile } from "fs/promises";
 
-const packages = [
-  "graphql-scalars",
-  "@graphql-tools/schema",
-  "@graphql-tools/merge",
-  "@graphql-tools/utils"
-];
+const packages = ["graphql-scalars"];
 
 for (const pkg of packages) {
   const path = `./node_modules/${pkg}/package.json`;

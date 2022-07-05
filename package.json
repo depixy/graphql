@@ -2,30 +2,26 @@
   "name": "@depixy/graphql-user",
   "version": "2.0.0",
   "description": "",
-  "main": "./lib/cjs/index.js",
-  "typings": "./lib/cjs/index.d.ts",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "type": "module",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "prebuild": "rimraf lib",
-    "build": "npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc --module node16 --outDir lib/esm",
-    "build:cjs": "tsc --module CommonJS --outDir lib/cjs",
+    "build": "tsc",
     "lint": "eslint --ext .ts src",
-    "codegen": "ts-node ./script/codegen.ts",
-    "patch": "node ./script/patch-ts.js"
+    "codegen:gql": "ts-node ./script/codegen.ts",
+    "codegen:test": "graphql-codegen",
+    "patch": "node ./script/patch-ts.mjs",
+    "test": "mocha"
   },
   "exports": {
     ".": {
       "import": {
-        "types": "./lib/esm/index.d.ts",
-        "default": "./lib/esm/index.js"
-      },
-      "require": {
-        "types": "./lib/cjs/index.d.ts",
-        "default": "./lib/cjs/index.js"
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
       }
     }
   },
@@ -48,20 +44,32 @@
     "lib"
   ],
   "dependencies": {
-    "@depixy/graphql-upload": "^2.0.0",
-    "@graphql-tools/schema": "^8.3.14",
+    "@depixy/graphql-upload": "^2.1.1",
+    "@graphql-tools/schema": "^8.5.0",
     "fastify-plugin": "^3.0.1",
     "graphql-scalars": "^1.17.0",
     "graphql-tag": "^2.12.6",
+    "luxon": "^2.4.0",
     "mercurius": "^10.0.0"
   },
   "devDependencies": {
-    "@depixy/auth": "^2.5.0",
-    "@depixy/database": "^2.3.1",
+    "@depixy/auth": "^2.7.1",
+    "@depixy/database": "^2.5.0",
+    "@fastify/cookie": "^7.0.0",
+    "@graphql-codegen/add": "^3.1.1",
+    "@graphql-codegen/cli": "^2.6.4",
+    "@graphql-codegen/typescript-generic-sdk": "^2.3.12",
     "@joshuaavalon/eslint-config-typescript": "^6.1.4",
+    "@types/chai": "^4.3.1",
+    "@types/lodash": "^4.14.182",
+    "@types/luxon": "^2.3.2",
+    "@types/mocha": "^9.1.1",
+    "chai": "^4.3.6",
     "eslint": "^8.17.0",
     "fastify": "^4.0.1",
+    "lodash": "^4.17.21",
     "mercurius-codegen": "^4.0.0",
+    "mocha": "^10.0.0",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "ts-node": "^10.8.1",

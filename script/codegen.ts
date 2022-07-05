@@ -29,5 +29,6 @@ codegenMercurius(app, {
   },
   preImportCode: `
   import type { FileUpload } from "@depixy/graphql-upload";
-  `
+  `,
+  outputSchema: true
 }).catch(console.error);

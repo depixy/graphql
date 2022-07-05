@@ -185,7 +185,7 @@ export type Query = {
   tagCategories: TagCategories;
   tag?: Maybe<Tag>;
   tags: Tags;
-  me?: Maybe<User>;
+  me?: Maybe<DetailUser>;
   user?: Maybe<User>;
   users: Users;
 };
@@ -246,10 +246,11 @@ export type Mutation = {
   createTag: Tag;
   updateTag: Tag;
   removeTags: BatchPayload;
-  login?: Maybe<User>;
+  login?: Maybe<DetailUser>;
   logout?: Maybe<Scalars["Void"]>;
-  createUser: User;
-  updateUser: User;
+  createUser: DetailUser;
+  createFirstUser: DetailUser;
+  updateUser: DetailUser;
   removeUsers: BatchPayload;
 };
 
@@ -294,6 +295,10 @@ export type MutationloginArgs = {
 };
 
 export type MutationcreateUserArgs = {
+  input: UserCreateInput;
+};
+
+export type MutationcreateFirstUserArgs = {
   input: UserCreateInput;
 };
 
@@ -463,12 +468,23 @@ export type BatchPayload = {
   count: Scalars["Int"];
 };
 
+export type DetailUser = {
+  __typename?: "DetailUser";
+  id: Scalars["ID"];
+  loginName: Scalars["String"];
+  displayName: Scalars["String"];
+  email: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"];
+  posts: Array<Post>;
+  roles: Array<Role>;
+};
+
 export type User = {
   __typename?: "User";
   id: Scalars["ID"];
   loginName: Scalars["String"];
   displayName: Scalars["String"];
-  email: Scalars["String"];
   createdAt: Scalars["DateTime"];
   updatedAt: Scalars["DateTime"];
   posts: Array<Post>;
@@ -685,6 +701,7 @@ export type ResolversTypes = {
   Order: Order;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   BatchPayload: ResolverTypeWrapper<BatchPayload>;
+  DetailUser: ResolverTypeWrapper<DetailUser>;
   User: ResolverTypeWrapper<User>;
   UserWhereUniqueInput: UserWhereUniqueInput;
   Users: ResolverTypeWrapper<Users>;
@@ -743,6 +760,7 @@ export type ResolversParentTypes = {
   Pagination: Pagination;
   PageInfo: PageInfo;
   BatchPayload: BatchPayload;
+  DetailUser: DetailUser;
   User: User;
   UserWhereUniqueInput: UserWhereUniqueInput;
   Users: Users;
@@ -844,7 +862,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QuerytagsArgs, "pagination">
   >;
-  me?: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
+  me?: Resolver<Maybe<ResolversTypes["DetailUser"]>, ParentType, ContextType>;
   user?: Resolver<
     Maybe<ResolversTypes["User"]>,
     ParentType,
@@ -918,20 +936,26 @@ export type MutationResolvers<
     RequireFields<MutationremoveTagsArgs, "input">
   >;
   login?: Resolver<
-    Maybe<ResolversTypes["User"]>,
+    Maybe<ResolversTypes["DetailUser"]>,
     ParentType,
     ContextType,
     RequireFields<MutationloginArgs, "input">
   >;
   logout?: Resolver<Maybe<ResolversTypes["Void"]>, ParentType, ContextType>;
   createUser?: Resolver<
-    ResolversTypes["User"],
+    ResolversTypes["DetailUser"],
     ParentType,
     ContextType,
     RequireFields<MutationcreateUserArgs, "input">
   >;
+  createFirstUser?: Resolver<
+    ResolversTypes["DetailUser"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationcreateFirstUserArgs, "input">
+  >;
   updateUser?: Resolver<
-    ResolversTypes["User"],
+    ResolversTypes["DetailUser"],
     ParentType,
     ContextType,
     RequireFields<MutationupdateUserArgs, "input">
@@ -1073,6 +1097,21 @@ export type BatchPayloadResolvers<
   isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type DetailUserResolvers<
+  ContextType = MercuriusContext,
+  ParentType extends ResolversParentTypes["DetailUser"] = ResolversParentTypes["DetailUser"]
+> = {
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  loginName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  displayName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  posts?: Resolver<Array<ResolversTypes["Post"]>, ParentType, ContextType>;
+  roles?: Resolver<Array<ResolversTypes["Role"]>, ParentType, ContextType>;
+  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UserResolvers<
   ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes["User"] = ResolversParentTypes["User"]
@@ -1080,7 +1119,6 @@ export type UserResolvers<
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   loginName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   displayName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   posts?: Resolver<Array<ResolversTypes["Post"]>, ParentType, ContextType>;
@@ -1128,6 +1166,7 @@ export type Resolvers<ContextType = MercuriusContext> = {
   Upload?: GraphQLScalarType;
   PageInfo?: PageInfoResolvers<ContextType>;
   BatchPayload?: BatchPayloadResolvers<ContextType>;
+  DetailUser?: DetailUserResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   Users?: UsersResolvers<ContextType>;
 };
@@ -1239,11 +1278,21 @@ export interface Loaders<
     count?: LoaderResolver<Scalars["Int"], BatchPayload, {}, TContext>;
   };
 
+  DetailUser?: {
+    id?: LoaderResolver<Scalars["ID"], DetailUser, {}, TContext>;
+    loginName?: LoaderResolver<Scalars["String"], DetailUser, {}, TContext>;
+    displayName?: LoaderResolver<Scalars["String"], DetailUser, {}, TContext>;
+    email?: LoaderResolver<Scalars["String"], DetailUser, {}, TContext>;
+    createdAt?: LoaderResolver<Scalars["DateTime"], DetailUser, {}, TContext>;
+    updatedAt?: LoaderResolver<Scalars["DateTime"], DetailUser, {}, TContext>;
+    posts?: LoaderResolver<Array<Post>, DetailUser, {}, TContext>;
+    roles?: LoaderResolver<Array<Role>, DetailUser, {}, TContext>;
+  };
+
   User?: {
     id?: LoaderResolver<Scalars["ID"], User, {}, TContext>;
     loginName?: LoaderResolver<Scalars["String"], User, {}, TContext>;
     displayName?: LoaderResolver<Scalars["String"], User, {}, TContext>;
-    email?: LoaderResolver<Scalars["String"], User, {}, TContext>;
     createdAt?: LoaderResolver<Scalars["DateTime"], User, {}, TContext>;
     updatedAt?: LoaderResolver<Scalars["DateTime"], User, {}, TContext>;
     posts?: LoaderResolver<Array<Post>, User, {}, TContext>;

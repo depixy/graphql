@@ -1,0 +1,23 @@
+schema: ./schema.gql
+documents: ./src/schema/__tests__/*.gql
+config:
+  gqlImport: ./type.js#gql
+  scalars:
+    BigInt: bigint
+    Date: Date
+    Time: Date
+    DateTime: Date
+    UUID: string
+    Upload: FileUpload
+  rawRequest: true
+  skipTypename: true
+generates:
+  ./src/schema/__tests__/type.generated.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - add:
+          content: // @ts-nocheck
+      - add:
+          content: import type { FileUpload } from "@depixy/graphql-upload"
+      - typescript-generic-sdk
