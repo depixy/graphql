@@ -1,0 +1,16 @@
+query user($input: UserWhereUniqueInput!) {
+  user(input: $input) {
+    id
+    loginName
+    displayName
+    createdAt
+    updatedAt
+    posts {
+      id
+    }
+    roles {
+      id
+      name
+    }
+  }
+}

@@ -23,6 +23,36 @@
         "types": "./lib/index.d.ts",
         "default": "./lib/index.js"
       }
+    },
+    "./schema/type": {
+      "import": {
+        "types": "./lib/schema/type/index.d.ts",
+        "default": "./lib/schema/type/index.js"
+      }
+    },
+    "./schema/generated": {
+      "import": {
+        "types": "./lib/schema/graphql.generated.d.ts",
+        "default": "./lib/schema/graphql.generated.js"
+      }
+    },
+    "./schema/util": {
+      "import": {
+        "types": "./lib/schema/util/index.d.ts",
+        "default": "./lib/schema/util/index.js"
+      }
+    },
+    "./error": {
+      "import": {
+        "types": "./lib/error/index.d.ts",
+        "default": "./lib/error/index.js"
+      }
+    },
+    "./schema/test": {
+      "import": {
+        "types": "./lib/schema/__tests__/index.d.ts",
+        "default": "./lib/schema/__tests__/index.js"
+      }
     }
   },
   "keywords": [
@@ -49,11 +79,13 @@
     "fastify-plugin": "^3.0.1",
     "graphql-scalars": "^1.17.0",
     "graphql-tag": "^2.12.6",
+    "lodash": "^4.17.21",
     "luxon": "^2.4.0",
-    "mercurius": "^10.0.0"
+    "mercurius": "^10.1.0",
+    "mercurius-auth": "^3.0.0"
   },
   "devDependencies": {
-    "@depixy/auth": "^2.7.1",
+    "@depixy/auth": "^2.8.0",
     "@depixy/database": "^2.5.0",
     "@fastify/cookie": "^7.0.0",
     "@graphql-codegen/add": "^3.1.1",
@@ -67,7 +99,6 @@
     "chai": "^4.3.6",
     "eslint": "^8.17.0",
     "fastify": "^4.0.1",
-    "lodash": "^4.17.21",
     "mercurius-codegen": "^4.0.0",
     "mocha": "^10.0.0",
     "prettier": "^2.6.2",

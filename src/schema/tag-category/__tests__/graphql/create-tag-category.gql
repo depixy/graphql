@@ -1,0 +1,16 @@
+mutation createTagCategory($input: TagCategoryCreateInput!) {
+  createTagCategory(input: $input) {
+    id
+    slug
+    name
+    tags {
+      id
+      slug
+      name
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}

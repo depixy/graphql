@@ -8,7 +8,7 @@ import type {
   TagUpdateInput,
   TagWhereInput,
   TagWhereUniqueInput
-} from "../graphql.generated.js";
+} from "@depixy/graphql/schema/generated";
 
 const create = (input: TagCreateInput): Prisma.TagCreateArgs["data"] => {
   const { name, slug, categoryId } = input;

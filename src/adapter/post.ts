@@ -7,7 +7,7 @@ import type {
   PostUpdateInput,
   PostWhereInput,
   PostWhereUniqueInput
-} from "../graphql.generated.js";
+} from "@depixy/graphql/schema/generated";
 
 const create = (
   input: PostCreateInput,

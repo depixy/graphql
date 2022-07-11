@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "lib",
     "target": "es2021",
     "module": "node16",
@@ -15,7 +16,15 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@depixy/graphql": ["src/index.ts"],
+      "@depixy/graphql/schema/type": ["src/schema/type/index.ts"],
+      "@depixy/graphql/schema/generated": ["src/schema/graphql.generated.ts"],
+      "@depixy/graphql/schema/util": ["src/schema/util/index.ts"],
+      "@depixy/graphql/error": ["src/error/index.ts"],
+      "@depixy/graphql/schema/test": ["src/schema/__tests__/index.ts"]
+    }
   },
   "include": ["src"],
   "ts-node": {

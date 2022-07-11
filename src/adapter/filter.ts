@@ -1,9 +1,10 @@
 import type { Prisma } from "@prisma/client";
 import type {
+  BooleanFilter,
   DateTimeFilter,
   IDFilter,
   StringFilter
-} from "../graphql.generated.js";
+} from "@depixy/graphql/schema/generated";
 
 const id = (input: IDFilter): Prisma.StringFilter => {
   const { equal, notIn, not } = input;
@@ -42,5 +43,12 @@ const dateTime = (input: DateTimeFilter): Prisma.DateTimeFilter => {
   };
 };
 
-const adapters = { id, string, dateTime };
+const boolean = (input: BooleanFilter): Prisma.BoolFilter => {
+  const { equal } = input;
+  return {
+    equals: equal ?? undefined
+  };
+};
+
+const adapters = { id, string, dateTime, boolean };
 export default adapters;

@@ -1,0 +1,5 @@
+mutation removeUsers($input: UserWhereInput!) {
+  removeUsers(input: $input) {
+    count
+  }
+}

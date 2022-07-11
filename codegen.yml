@@ -1,5 +1,5 @@
 schema: ./schema.gql
-documents: ./src/schema/__tests__/*.gql
+documents: ./src/schema/**/__tests__/graphql/*.gql
 config:
   gqlImport: ./type.js#gql
   scalars:
@@ -9,6 +9,7 @@ config:
     DateTime: Date
     UUID: string
     Upload: FileUpload
+    Void: "null"
   rawRequest: true
   skipTypename: true
 generates:

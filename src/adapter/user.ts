@@ -2,12 +2,13 @@ import filter from "./filter.js";
 
 import type { Prisma } from "@prisma/client";
 import type {
+  MeUpdateInput,
   UserCreateInput,
   UserOrderBy,
   UserUpdateInput,
   UserWhereInput,
   UserWhereUniqueInput
-} from "../graphql.generated.js";
+} from "@depixy/graphql/schema/generated";
 
 const create = (input: UserCreateInput): Prisma.UserCreateArgs["data"] => {
   const { loginName, displayName, email, password } = input;
@@ -60,16 +61,22 @@ const orderBy = (
   });
 
 const update = (input: UserUpdateInput): Prisma.UserUpdateArgs["data"] => {
-  const { id, loginName, displayName, email, password } = input;
+  const { displayName, email, password } = input;
   return {
-    id: id ?? undefined,
-    loginName: loginName ?? undefined,
     displayName: displayName ?? undefined,
     email: email ?? undefined,
-    hashedPassword: password ?? undefined,
-    updatedAt: new Date()
+    hashedPassword: password ?? undefined
   };
 };
 
-const adapters = { create, whereUnique, where, orderBy, update };
+const updateMe = (input: MeUpdateInput): Prisma.UserUpdateArgs["data"] => {
+  const { displayName, email, password } = input;
+  return {
+    displayName: displayName ?? undefined,
+    email: email ?? undefined,
+    hashedPassword: password ?? undefined
+  };
+};
+
+const adapters = { create, whereUnique, where, orderBy, update, updateMe };
 export default adapters;

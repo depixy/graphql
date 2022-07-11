@@ -1,0 +1,17 @@
+query me {
+  me {
+    id
+    loginName
+    displayName
+    email
+    createdAt
+    updatedAt
+    posts {
+      id
+    }
+    roles {
+      id
+      name
+    }
+  }
+}

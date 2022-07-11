@@ -10,13 +10,13 @@ const app = fastify();
 app.register(graphqlUpload);
 app.register(mercurius, {
   schema,
-  path: "/api/v1/graphql/user",
+  path: "/api/v1/graphql",
   graphiql: false,
   queryDepth: 7
 });
 
 codegenMercurius(app, {
-  targetPath: "./src/graphql.generated.ts",
+  targetPath: "./src/schema/graphql.generated.ts",
   codegenConfig: {
     scalars: {
       BigInt: "bigint",

@@ -1,0 +1,19 @@
+query tagCategories($pagination: Pagination!, $orderBy: [TagCategoryOrderBy!]) {
+  tagCategories(pagination: $pagination) {
+    count
+    edges(pagination: $pagination, orderBy: $orderBy) {
+      id
+      slug
+      name
+      tags {
+        id
+        slug
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}

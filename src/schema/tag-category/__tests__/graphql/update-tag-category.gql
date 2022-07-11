@@ -1,0 +1,16 @@
+mutation updateTagCategory($input: TagCategoryUpdateInput!) {
+  updateTagCategory(input: $input) {
+    id
+    slug
+    name
+    tags {
+      id
+      slug
+      name
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}

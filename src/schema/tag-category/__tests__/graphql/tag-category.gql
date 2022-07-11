@@ -1,0 +1,16 @@
+query tagCategory($input: TagCategoryWhereUniqueInput!) {
+  tagCategory(input: $input) {
+    id
+    slug
+    name
+    tags {
+      id
+      slug
+      name
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}

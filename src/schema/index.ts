@@ -7,15 +7,13 @@ import type {
 import type { IResolvers } from "mercurius";
 import type { GraphQLSchema } from "graphql";
 
-import * as filter from "./filter.js";
-import * as image from "./image.js";
-import * as post from "./post.js";
-import * as tagCategory from "./tag-category.js";
-import * as tag from "./tag.js";
-import * as role from "./role.js";
-import * as scalar from "./scalar.js";
-import * as type from "./type.js";
-import * as user from "./user.js";
+import commonSchemas from "./common/index.js";
+import imageSchemas from "./image/index.js";
+import postSchemas from "./post/index.js";
+import tagCategorySchemas from "./tag-category/index.js";
+import tagSchemas from "./tag/index.js";
+import roleSchemas from "./role/index.js";
+import userSchemas from "./user/index.js";
 
 interface PartialSchema {
   typeDefs?: TypeSource;
@@ -40,15 +38,13 @@ function mergeSchema(...schemas: PartialSchema[]): GraphQLSchema {
 }
 
 const schema = mergeSchema(
-  filter,
-  image,
-  post,
-  tagCategory,
-  tag,
-  role,
-  scalar,
-  type,
-  user
+  ...commonSchemas,
+  ...imageSchemas,
+  ...postSchemas,
+  ...tagCategorySchemas,
+  ...tagSchemas,
+  ...roleSchemas,
+  ...userSchemas
 );
 
 export default schema;

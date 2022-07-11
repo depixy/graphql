@@ -27,7 +27,7 @@ export type Scalars = {
   /** The `Upload` scalar type represents a file upload. */
   Upload: FileUpload;
   /** Represents NULL values */
-  Void: any;
+  Void: null;
 };
 
 export type BatchPayload = {
@@ -39,17 +39,6 @@ export type BooleanFilter = {
 };
 
 export type DateTimeFilter = {
-  equal?: InputMaybe<Scalars['DateTime']>;
-  gt?: InputMaybe<Scalars['DateTime']>;
-  gte?: InputMaybe<Scalars['DateTime']>;
-  in?: InputMaybe<Array<Scalars['DateTime']>>;
-  lt?: InputMaybe<Scalars['DateTime']>;
-  lte?: InputMaybe<Scalars['DateTime']>;
-  not?: InputMaybe<DateTimeFilter>;
-  notIn?: InputMaybe<Array<Scalars['DateTime']>>;
-};
-
-export type DateTimeNullableFilter = {
   equal?: InputMaybe<Scalars['DateTime']>;
   gt?: InputMaybe<Scalars['DateTime']>;
   gte?: InputMaybe<Scalars['DateTime']>;
@@ -94,32 +83,41 @@ export type LoginInput = {
   password: Scalars['String'];
 };
 
+export type MeUpdateInput = {
+  displayName?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+};
+
 export type Mutation = {
-  createFirstUser: DetailUser;
   createPost: Post;
+  createRole: Role;
   createTag: Tag;
   createTagCategory: TagCategory;
   createUser: DetailUser;
   login?: Maybe<DetailUser>;
   logout?: Maybe<Scalars['Void']>;
   removePosts: BatchPayload;
+  removeRoles: BatchPayload;
   removeTagCategories: BatchPayload;
   removeTags: BatchPayload;
   removeUsers: BatchPayload;
+  updateMe: DetailUser;
   updatePost: Post;
+  updateRole: Role;
   updateTag: Tag;
   updateTagCategory: TagCategory;
   updateUser: DetailUser;
 };
 
 
-export type MutationCreateFirstUserArgs = {
-  input: UserCreateInput;
+export type MutationCreatePostArgs = {
+  input: PostCreateInput;
 };
 
 
-export type MutationCreatePostArgs = {
-  input: PostCreateInput;
+export type MutationCreateRoleArgs = {
+  input: RoleCreateInput;
 };
 
 
@@ -148,6 +146,11 @@ export type MutationRemovePostsArgs = {
 };
 
 
+export type MutationRemoveRolesArgs = {
+  input: RoleWhereInput;
+};
+
+
 export type MutationRemoveTagCategoriesArgs = {
   input: TagCategoryWhereInput;
 };
@@ -163,8 +166,18 @@ export type MutationRemoveUsersArgs = {
 };
 
 
+export type MutationUpdateMeArgs = {
+  input: MeUpdateInput;
+};
+
+
 export type MutationUpdatePostArgs = {
   input: PostUpdateInput;
+};
+
+
+export type MutationUpdateRoleArgs = {
+  input: RoleUpdateInput;
 };
 
 
@@ -269,6 +282,8 @@ export type Query = {
   me?: Maybe<DetailUser>;
   post?: Maybe<Post>;
   posts: Posts;
+  role?: Maybe<Role>;
+  roles: Roles;
   tag?: Maybe<Tag>;
   tagCategories: TagCategories;
   tagCategory?: Maybe<TagCategory>;
@@ -284,6 +299,16 @@ export type QueryPostArgs = {
 
 
 export type QueryPostsArgs = {
+  pagination: Pagination;
+};
+
+
+export type QueryRoleArgs = {
+  input: RoleWhereUniqueInput;
+};
+
+
+export type QueryRolesArgs = {
   pagination: Pagination;
 };
 
@@ -319,22 +344,64 @@ export type QueryUsersArgs = {
 
 export type Role = {
   createdAt: Scalars['DateTime'];
+  editable: Scalars['Boolean'];
   id: Scalars['ID'];
   name: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
 
-export type StringFilter = {
-  contain?: InputMaybe<Scalars['String']>;
-  endWith?: InputMaybe<Scalars['String']>;
-  equal?: InputMaybe<Scalars['String']>;
-  in?: InputMaybe<Array<Scalars['String']>>;
-  not?: InputMaybe<StringFilter>;
-  notIn?: InputMaybe<Array<Scalars['String']>>;
-  startWith?: InputMaybe<Scalars['String']>;
+export type RoleCreateInput = {
+  name: Scalars['String'];
 };
 
-export type StringNullableFilter = {
+export type RoleOrderBy = {
+  createdAt?: InputMaybe<Order>;
+  editable?: InputMaybe<Order>;
+  id?: InputMaybe<Order>;
+  name?: InputMaybe<Order>;
+  updatedAt?: InputMaybe<Order>;
+};
+
+export type RoleUpdateInput = {
+  id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type RoleWhereInput = {
+  AND?: InputMaybe<Array<RoleWhereInput>>;
+  NOT?: InputMaybe<Array<RoleWhereInput>>;
+  OR?: InputMaybe<Array<RoleWhereInput>>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  editable?: InputMaybe<BooleanFilter>;
+  id?: InputMaybe<IdFilter>;
+  name?: InputMaybe<StringFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
+};
+
+export type RoleWhereUniqueInput = {
+  id?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type Roles = {
+  count: Scalars['Int'];
+  edges: Array<Role>;
+  pageInfo: PageInfo;
+};
+
+
+export type RolesCountArgs = {
+  input?: InputMaybe<RoleWhereInput>;
+};
+
+
+export type RolesEdgesArgs = {
+  input?: InputMaybe<RoleWhereInput>;
+  orderBy?: InputMaybe<Array<RoleOrderBy>>;
+  pagination: Pagination;
+};
+
+export type StringFilter = {
   contain?: InputMaybe<Scalars['String']>;
   endWith?: InputMaybe<Scalars['String']>;
   equal?: InputMaybe<Scalars['String']>;
@@ -508,7 +575,6 @@ export type UserUpdateInput = {
   displayName?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
-  loginName?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
 };
 
@@ -548,12 +614,86 @@ export type UsersEdgesArgs = {
   pagination: Pagination;
 };
 
-export type CreateFirstUserMutationVariables = Exact<{
+export type CreateTagCategoryMutationVariables = Exact<{
+  input: TagCategoryCreateInput;
+}>;
+
+
+export type CreateTagCategoryMutation = { createTagCategory: { id: string, slug: string, name: string, createdAt: Date, updatedAt: Date, tags: Array<{ id: string, slug: string, name: string, createdAt: Date, updatedAt: Date }> } };
+
+export type RemoveTagCategoriesMutationVariables = Exact<{
+  input: TagCategoryWhereInput;
+}>;
+
+
+export type RemoveTagCategoriesMutation = { removeTagCategories: { count: number } };
+
+export type TagCategoriesQueryVariables = Exact<{
+  pagination: Pagination;
+  orderBy?: InputMaybe<Array<TagCategoryOrderBy> | TagCategoryOrderBy>;
+}>;
+
+
+export type TagCategoriesQuery = { tagCategories: { count: number, edges: Array<{ id: string, slug: string, name: string, createdAt: Date, updatedAt: Date, tags: Array<{ id: string, slug: string, name: string, createdAt: Date, updatedAt: Date }> }> } };
+
+export type TagCategoryQueryVariables = Exact<{
+  input: TagCategoryWhereUniqueInput;
+}>;
+
+
+export type TagCategoryQuery = { tagCategory?: { id: string, slug: string, name: string, createdAt: Date, updatedAt: Date, tags: Array<{ id: string, slug: string, name: string, createdAt: Date, updatedAt: Date }> } | null };
+
+export type UpdateTagCategoryMutationVariables = Exact<{
+  input: TagCategoryUpdateInput;
+}>;
+
+
+export type UpdateTagCategoryMutation = { updateTagCategory: { id: string, slug: string, name: string, createdAt: Date, updatedAt: Date, tags: Array<{ id: string, slug: string, name: string, createdAt: Date, updatedAt: Date }> } };
+
+export type CreateUserMutationVariables = Exact<{
   input: UserCreateInput;
 }>;
 
 
-export type CreateFirstUserMutation = { createFirstUser: { id: string, loginName: string, displayName: string, email: string, createdAt: Date, updatedAt: Date, posts: Array<{ id: string }>, roles: Array<{ id: string, name: string }> } };
+export type CreateUserMutation = { createUser: { id: string, loginName: string, displayName: string, email: string, createdAt: Date, updatedAt: Date, posts: Array<{ id: string }>, roles: Array<{ id: string, name: string }> } };
+
+export type LoginMutationVariables = Exact<{
+  input: LoginInput;
+}>;
+
+
+export type LoginMutation = { login?: { id: string, loginName: string, displayName: string, email: string, createdAt: Date, updatedAt: Date, posts: Array<{ id: string }>, roles: Array<{ id: string, name: string }> } | null };
+
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { logout?: null | null };
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { me?: { id: string, loginName: string, displayName: string, email: string, createdAt: Date, updatedAt: Date, posts: Array<{ id: string }>, roles: Array<{ id: string, name: string }> } | null };
+
+export type RemoveUsersMutationVariables = Exact<{
+  input: UserWhereInput;
+}>;
+
+
+export type RemoveUsersMutation = { removeUsers: { count: number } };
+
+export type UpdateMeMutationVariables = Exact<{
+  input: MeUpdateInput;
+}>;
+
+
+export type UpdateMeMutation = { updateMe: { id: string, loginName: string, displayName: string, email: string, createdAt: Date, updatedAt: Date, posts: Array<{ id: string }>, roles: Array<{ id: string, name: string }> } };
+
+export type UpdateUserMutationVariables = Exact<{
+  input: UserUpdateInput;
+}>;
+
+
+export type UpdateUserMutation = { updateUser: { id: string, loginName: string, displayName: string, email: string, createdAt: Date, updatedAt: Date, posts: Array<{ id: string }>, roles: Array<{ id: string, name: string }> } };
 
 export type UserQueryVariables = Exact<{
   input: UserWhereUniqueInput;
@@ -564,99 +704,98 @@ export type UserQuery = { user?: { id: string, loginName: string, displayName: s
 
 export type UsersQueryVariables = Exact<{
   pagination: Pagination;
+  orderBy?: InputMaybe<Array<UserOrderBy> | UserOrderBy>;
 }>;
 
 
 export type UsersQuery = { users: { count: number, edges: Array<{ id: string, loginName: string, displayName: string, createdAt: Date, updatedAt: Date, posts: Array<{ id: string }>, roles: Array<{ id: string, name: string }> }> } };
 
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
-
-export type MeQuery = { me?: { id: string, loginName: string, displayName: string, email: string, createdAt: Date, updatedAt: Date, posts: Array<{ id: string }>, roles: Array<{ id: string, name: string }> } | null };
-
-export type LoginMutationVariables = Exact<{
-  input: LoginInput;
-}>;
-
-
-export type LoginMutation = { login?: { id: string, loginName: string, displayName: string, email: string, createdAt: Date, updatedAt: Date, posts: Array<{ id: string }>, roles: Array<{ id: string, name: string }> } | null };
-
-export type UpdateUserMutationVariables = Exact<{
-  input: UserUpdateInput;
-}>;
-
-
-export type UpdateUserMutation = { updateUser: { id: string, loginName: string, displayName: string, email: string, createdAt: Date, updatedAt: Date, posts: Array<{ id: string }>, roles: Array<{ id: string, name: string }> } };
-
-export type RemoveUsersMutationVariables = Exact<{
-  input: UserWhereInput;
-}>;
-
-
-export type RemoveUsersMutation = { removeUsers: { count: number } };
-
-
-export const CreateFirstUserDocument = gql`
-    mutation createFirstUser($input: UserCreateInput!) {
-  createFirstUser(input: $input) {
+export const CreateTagCategoryDocument = gql`
+    mutation createTagCategory($input: TagCategoryCreateInput!) {
+  createTagCategory(input: $input) {
     id
-    loginName
-    displayName
-    email
-    createdAt
-    updatedAt
-    posts {
+    slug
+    name
+    tags {
       id
-    }
-    roles {
-      id
+      slug
       name
-    }
-  }
-}
-    `;
-export const UserDocument = gql`
-    query user($input: UserWhereUniqueInput!) {
-  user(input: $input) {
-    id
-    loginName
-    displayName
-    createdAt
-    updatedAt
-    posts {
-      id
-    }
-    roles {
-      id
-      name
-    }
-  }
-}
-    `;
-export const UsersDocument = gql`
-    query users($pagination: Pagination!) {
-  users(pagination: $pagination) {
-    count
-    edges(pagination: $pagination) {
-      id
-      loginName
-      displayName
       createdAt
       updatedAt
-      posts {
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const RemoveTagCategoriesDocument = gql`
+    mutation removeTagCategories($input: TagCategoryWhereInput!) {
+  removeTagCategories(input: $input) {
+    count
+  }
+}
+    `;
+export const TagCategoriesDocument = gql`
+    query tagCategories($pagination: Pagination!, $orderBy: [TagCategoryOrderBy!]) {
+  tagCategories(pagination: $pagination) {
+    count
+    edges(pagination: $pagination, orderBy: $orderBy) {
+      id
+      slug
+      name
+      tags {
         id
-      }
-      roles {
-        id
+        slug
         name
+        createdAt
+        updatedAt
       }
+      createdAt
+      updatedAt
     }
   }
 }
     `;
-export const MeDocument = gql`
-    query me {
-  me {
+export const TagCategoryDocument = gql`
+    query tagCategory($input: TagCategoryWhereUniqueInput!) {
+  tagCategory(input: $input) {
+    id
+    slug
+    name
+    tags {
+      id
+      slug
+      name
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const UpdateTagCategoryDocument = gql`
+    mutation updateTagCategory($input: TagCategoryUpdateInput!) {
+  updateTagCategory(input: $input) {
+    id
+    slug
+    name
+    tags {
+      id
+      slug
+      name
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const CreateUserDocument = gql`
+    mutation createUser($input: UserCreateInput!) {
+  createUser(input: $input) {
     id
     loginName
     displayName
@@ -692,9 +831,14 @@ export const LoginDocument = gql`
   }
 }
     `;
-export const UpdateUserDocument = gql`
-    mutation updateUser($input: UserUpdateInput!) {
-  updateUser(input: $input) {
+export const LogoutDocument = gql`
+    mutation logout {
+  logout
+}
+    `;
+export const MeDocument = gql`
+    query me {
+  me {
     id
     loginName
     displayName
@@ -718,29 +862,127 @@ export const RemoveUsersDocument = gql`
   }
 }
     `;
+export const UpdateMeDocument = gql`
+    mutation updateMe($input: MeUpdateInput!) {
+  updateMe(input: $input) {
+    id
+    loginName
+    displayName
+    email
+    createdAt
+    updatedAt
+    posts {
+      id
+    }
+    roles {
+      id
+      name
+    }
+  }
+}
+    `;
+export const UpdateUserDocument = gql`
+    mutation updateUser($input: UserUpdateInput!) {
+  updateUser(input: $input) {
+    id
+    loginName
+    displayName
+    email
+    createdAt
+    updatedAt
+    posts {
+      id
+    }
+    roles {
+      id
+      name
+    }
+  }
+}
+    `;
+export const UserDocument = gql`
+    query user($input: UserWhereUniqueInput!) {
+  user(input: $input) {
+    id
+    loginName
+    displayName
+    createdAt
+    updatedAt
+    posts {
+      id
+    }
+    roles {
+      id
+      name
+    }
+  }
+}
+    `;
+export const UsersDocument = gql`
+    query users($pagination: Pagination!, $orderBy: [UserOrderBy!]) {
+  users(pagination: $pagination) {
+    count
+    edges(pagination: $pagination, orderBy: $orderBy) {
+      id
+      loginName
+      displayName
+      createdAt
+      updatedAt
+      posts {
+        id
+      }
+      roles {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
 export function getSdk<C>(requester: Requester<C>) {
   return {
-    createFirstUser(variables: CreateFirstUserMutationVariables, options?: C): Promise<{ data?: CreateFirstUserMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
-      return requester<CreateFirstUserMutation, CreateFirstUserMutationVariables>(CreateFirstUserDocument, variables, options);
+    createTagCategory(variables: CreateTagCategoryMutationVariables, options?: C): Promise<{ data?: CreateTagCategoryMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<CreateTagCategoryMutation, CreateTagCategoryMutationVariables>(CreateTagCategoryDocument, variables, options);
+    },
+    removeTagCategories(variables: RemoveTagCategoriesMutationVariables, options?: C): Promise<{ data?: RemoveTagCategoriesMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<RemoveTagCategoriesMutation, RemoveTagCategoriesMutationVariables>(RemoveTagCategoriesDocument, variables, options);
+    },
+    tagCategories(variables: TagCategoriesQueryVariables, options?: C): Promise<{ data?: TagCategoriesQuery, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<TagCategoriesQuery, TagCategoriesQueryVariables>(TagCategoriesDocument, variables, options);
+    },
+    tagCategory(variables: TagCategoryQueryVariables, options?: C): Promise<{ data?: TagCategoryQuery, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<TagCategoryQuery, TagCategoryQueryVariables>(TagCategoryDocument, variables, options);
+    },
+    updateTagCategory(variables: UpdateTagCategoryMutationVariables, options?: C): Promise<{ data?: UpdateTagCategoryMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<UpdateTagCategoryMutation, UpdateTagCategoryMutationVariables>(UpdateTagCategoryDocument, variables, options);
+    },
+    createUser(variables: CreateUserMutationVariables, options?: C): Promise<{ data?: CreateUserMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, variables, options);
+    },
+    login(variables: LoginMutationVariables, options?: C): Promise<{ data?: LoginMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<LoginMutation, LoginMutationVariables>(LoginDocument, variables, options);
+    },
+    logout(variables?: LogoutMutationVariables, options?: C): Promise<{ data?: LogoutMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<LogoutMutation, LogoutMutationVariables>(LogoutDocument, variables, options);
+    },
+    me(variables?: MeQueryVariables, options?: C): Promise<{ data?: MeQuery, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<MeQuery, MeQueryVariables>(MeDocument, variables, options);
+    },
+    removeUsers(variables: RemoveUsersMutationVariables, options?: C): Promise<{ data?: RemoveUsersMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<RemoveUsersMutation, RemoveUsersMutationVariables>(RemoveUsersDocument, variables, options);
+    },
+    updateMe(variables: UpdateMeMutationVariables, options?: C): Promise<{ data?: UpdateMeMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<UpdateMeMutation, UpdateMeMutationVariables>(UpdateMeDocument, variables, options);
+    },
+    updateUser(variables: UpdateUserMutationVariables, options?: C): Promise<{ data?: UpdateUserMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, variables, options);
     },
     user(variables: UserQueryVariables, options?: C): Promise<{ data?: UserQuery, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
       return requester<UserQuery, UserQueryVariables>(UserDocument, variables, options);
     },
     users(variables: UsersQueryVariables, options?: C): Promise<{ data?: UsersQuery, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
       return requester<UsersQuery, UsersQueryVariables>(UsersDocument, variables, options);
-    },
-    me(variables?: MeQueryVariables, options?: C): Promise<{ data?: MeQuery, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
-      return requester<MeQuery, MeQueryVariables>(MeDocument, variables, options);
-    },
-    login(variables: LoginMutationVariables, options?: C): Promise<{ data?: LoginMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
-      return requester<LoginMutation, LoginMutationVariables>(LoginDocument, variables, options);
-    },
-    updateUser(variables: UpdateUserMutationVariables, options?: C): Promise<{ data?: UpdateUserMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
-      return requester<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, variables, options);
-    },
-    removeUsers(variables: RemoveUsersMutationVariables, options?: C): Promise<{ data?: RemoveUsersMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
-      return requester<RemoveUsersMutation, RemoveUsersMutationVariables>(RemoveUsersDocument, variables, options);
     }
   };
 }

@@ -1,0 +1,19 @@
+query users($pagination: Pagination!, $orderBy: [UserOrderBy!]) {
+  users(pagination: $pagination) {
+    count
+    edges(pagination: $pagination, orderBy: $orderBy) {
+      id
+      loginName
+      displayName
+      createdAt
+      updatedAt
+      posts {
+        id
+      }
+      roles {
+        id
+        name
+      }
+    }
+  }
+}

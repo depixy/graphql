@@ -8,7 +8,7 @@ import type {
   TagCategoryUpdateInput,
   TagCategoryWhereInput,
   TagCategoryWhereUniqueInput
-} from "../graphql.generated.js";
+} from "@depixy/graphql/schema/generated";
 
 const create = (
   input: TagCategoryCreateInput
