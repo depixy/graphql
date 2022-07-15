@@ -102,6 +102,7 @@ type Query {
   tagCategories(pagination: Pagination!): TagCategories!
   tag(input: TagWhereUniqueInput!): Tag
   tags(pagination: Pagination!): Tags!
+  predictTag(input: TagPredictInput!): [Tag!]!
   role(input: RoleWhereUniqueInput!): Role
   roles(pagination: Pagination!): Roles!
   me: DetailUser
@@ -293,6 +294,10 @@ input TagUpdateInput {
   id: ID!
   slug: String
   name: String
+}
+
+input TagPredictInput {
+  data: String!
 }
 
 type Tag {

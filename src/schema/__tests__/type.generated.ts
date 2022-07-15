@@ -650,6 +650,42 @@ export type UpdateTagCategoryMutationVariables = Exact<{
 
 export type UpdateTagCategoryMutation = { updateTagCategory: { id: string, slug: string, name: string, createdAt: Date, updatedAt: Date, tags: Array<{ id: string, slug: string, name: string, createdAt: Date, updatedAt: Date }> } };
 
+export type CreateTagMutationVariables = Exact<{
+  input: TagCreateInput;
+}>;
+
+
+export type CreateTagMutation = { createTag: { id: string, slug: string, name: string, createdAt: Date, updatedAt: Date, category: { id: string, slug: string, name: string, createdAt: Date, updatedAt: Date } } };
+
+export type RemoveTagsMutationVariables = Exact<{
+  input: TagWhereInput;
+}>;
+
+
+export type RemoveTagsMutation = { removeTags: { count: number } };
+
+export type TagQueryVariables = Exact<{
+  input: TagWhereUniqueInput;
+}>;
+
+
+export type TagQuery = { tag?: { id: string, slug: string, name: string, createdAt: Date, updatedAt: Date, category: { id: string, slug: string, name: string, createdAt: Date, updatedAt: Date } } | null };
+
+export type TagsQueryVariables = Exact<{
+  pagination: Pagination;
+  orderBy?: InputMaybe<Array<TagOrderBy> | TagOrderBy>;
+}>;
+
+
+export type TagsQuery = { tags: { count: number, edges: Array<{ id: string, slug: string, name: string, createdAt: Date, updatedAt: Date, category: { id: string, slug: string, name: string, createdAt: Date, updatedAt: Date } }> } };
+
+export type UpdateTagMutationVariables = Exact<{
+  input: TagUpdateInput;
+}>;
+
+
+export type UpdateTagMutation = { updateTag: { id: string, slug: string, name: string, createdAt: Date, updatedAt: Date, category: { id: string, slug: string, name: string, createdAt: Date, updatedAt: Date } } };
+
 export type CreateUserMutationVariables = Exact<{
   input: UserCreateInput;
 }>;
@@ -782,6 +818,88 @@ export const UpdateTagCategoryDocument = gql`
     slug
     name
     tags {
+      id
+      slug
+      name
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const CreateTagDocument = gql`
+    mutation createTag($input: TagCreateInput!) {
+  createTag(input: $input) {
+    id
+    slug
+    name
+    category {
+      id
+      slug
+      name
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const RemoveTagsDocument = gql`
+    mutation removeTags($input: TagWhereInput!) {
+  removeTags(input: $input) {
+    count
+  }
+}
+    `;
+export const TagDocument = gql`
+    query tag($input: TagWhereUniqueInput!) {
+  tag(input: $input) {
+    id
+    slug
+    name
+    category {
+      id
+      slug
+      name
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const TagsDocument = gql`
+    query tags($pagination: Pagination!, $orderBy: [TagOrderBy!]) {
+  tags(pagination: $pagination) {
+    count
+    edges(pagination: $pagination, orderBy: $orderBy) {
+      id
+      slug
+      name
+      category {
+        id
+        slug
+        name
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+export const UpdateTagDocument = gql`
+    mutation updateTag($input: TagUpdateInput!) {
+  updateTag(input: $input) {
+    id
+    slug
+    name
+    category {
       id
       slug
       name
@@ -956,6 +1074,21 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     updateTagCategory(variables: UpdateTagCategoryMutationVariables, options?: C): Promise<{ data?: UpdateTagCategoryMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
       return requester<UpdateTagCategoryMutation, UpdateTagCategoryMutationVariables>(UpdateTagCategoryDocument, variables, options);
+    },
+    createTag(variables: CreateTagMutationVariables, options?: C): Promise<{ data?: CreateTagMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<CreateTagMutation, CreateTagMutationVariables>(CreateTagDocument, variables, options);
+    },
+    removeTags(variables: RemoveTagsMutationVariables, options?: C): Promise<{ data?: RemoveTagsMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<RemoveTagsMutation, RemoveTagsMutationVariables>(RemoveTagsDocument, variables, options);
+    },
+    tag(variables: TagQueryVariables, options?: C): Promise<{ data?: TagQuery, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<TagQuery, TagQueryVariables>(TagDocument, variables, options);
+    },
+    tags(variables: TagsQueryVariables, options?: C): Promise<{ data?: TagsQuery, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<TagsQuery, TagsQueryVariables>(TagsDocument, variables, options);
+    },
+    updateTag(variables: UpdateTagMutationVariables, options?: C): Promise<{ data?: UpdateTagMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
+      return requester<UpdateTagMutation, UpdateTagMutationVariables>(UpdateTagDocument, variables, options);
     },
     createUser(variables: CreateUserMutationVariables, options?: C): Promise<{ data?: CreateUserMutation, errors?: Array<{ message: string; extensions?: unknown }>, extensions?: unknown }> {
       return requester<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, variables, options);

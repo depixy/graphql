@@ -1,0 +1,5 @@
+mutation removeTags($input: TagWhereInput!) {
+  removeTags(input: $input) {
+    count
+  }
+}

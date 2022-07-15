@@ -37,4 +37,8 @@ export const typeDefs = gql`
     slug: String
     name: String
   }
+
+  input TagPredictInput {
+    data: String!
+  }
 `;

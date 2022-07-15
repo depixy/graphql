@@ -1,7 +1,8 @@
 import { default as fastifyPlugin } from "fastify-plugin";
 import { default as mercurius } from "mercurius";
 import { default as mercuriusAuth } from "mercurius-auth";
-import graphqlUpload from "@depixy/graphql-upload";
+import graphqlUploadPlugin from "@depixy/graphql-upload";
+import storagePlugin from "@depixy/storage";
 
 import schema from "./schema/index.js";
 import { mercuriusAuthOptions } from "./auth/index.js";
@@ -17,7 +18,8 @@ export const plugin = fastifyPlugin<DepixyGraphqlOptions>(
     }
     fastify.register(async fastify => {
       fastify.decorate("adapters", adapters);
-      fastify.register(graphqlUpload);
+      fastify.register(graphqlUploadPlugin);
+      fastify.register(storagePlugin);
       fastify.register(mercurius, {
         schema,
         path: "/api/v1/graphql",
@@ -30,7 +32,7 @@ export const plugin = fastifyPlugin<DepixyGraphqlOptions>(
   },
   {
     name: "@depixy/graphql",
-    dependencies: ["@depixy/auth", "@depixy/database"],
+    dependencies: ["@depixy/auth", "@depixy/database", "@depixy/storage"],
     fastify: "4.x"
   }
 );

@@ -118,6 +118,7 @@ export type Query = {
   tagCategories: TagCategories;
   tag?: Maybe<Tag>;
   tags: Tags;
+  predictTag: Array<Tag>;
   role?: Maybe<Role>;
   roles: Roles;
   me?: Maybe<DetailUser>;
@@ -147,6 +148,10 @@ export type QuerytagArgs = {
 
 export type QuerytagsArgs = {
   pagination: Pagination;
+};
+
+export type QuerypredictTagArgs = {
+  input: TagPredictInput;
 };
 
 export type QueryroleArgs = {
@@ -435,6 +440,10 @@ export type TagUpdateInput = {
   id: Scalars["ID"];
   slug?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
+};
+
+export type TagPredictInput = {
+  data: Scalars["String"];
 };
 
 export type Tag = {
@@ -756,6 +765,7 @@ export type ResolversTypes = {
   TagOrderBy: TagOrderBy;
   TagCreateInput: TagCreateInput;
   TagUpdateInput: TagUpdateInput;
+  TagPredictInput: TagPredictInput;
   Tag: ResolverTypeWrapper<Tag>;
   Tags: ResolverTypeWrapper<Tags>;
   RoleWhereUniqueInput: RoleWhereUniqueInput;
@@ -820,6 +830,7 @@ export type ResolversParentTypes = {
   TagOrderBy: TagOrderBy;
   TagCreateInput: TagCreateInput;
   TagUpdateInput: TagUpdateInput;
+  TagPredictInput: TagPredictInput;
   Tag: Tag;
   Tags: Tags;
   RoleWhereUniqueInput: RoleWhereUniqueInput;
@@ -932,6 +943,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QuerytagsArgs, "pagination">
+  >;
+  predictTag?: Resolver<
+    Array<ResolversTypes["Tag"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QuerypredictTagArgs, "input">
   >;
   role?: Resolver<
     Maybe<ResolversTypes["Role"]>,

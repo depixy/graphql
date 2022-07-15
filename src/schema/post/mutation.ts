@@ -16,10 +16,19 @@ export const typeDefs = gql`
 export const resolvers: Resolvers = {
   Mutation: {
     createPost: async (_parent, args, ctx) => {
-      const { db, adapters } = ctx.app;
+      const { db, adapters, storage } = ctx.app;
       const { input } = args;
       const user = assertUser(ctx);
       const data = adapters.post.create(input, user.id);
+      const post = await db.post.create({ data });
+      for (let i = 0; i < input.images.length; i++) {
+        const inputImage = input.images[i];
+        const image = await db.image.create({
+          data: { userId: user.id, postId: post.id, number: i }
+        });
+        inputImage.createReadStream();
+        storage.set(`upload/${image.id}/origin`);
+      }
       return await db.post.create({ data });
     },
     updatePost: async (_parent, args, ctx) => {
