@@ -11,7 +11,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
-    "noUncheckedIndexedAccess": true,
+    // "noUncheckedIndexedAccess": true,
     "suppressImplicitAnyIndexErrors": true,
     "strict": true,
     "allowSyntheticDefaultImports": true,
